@@ -24,14 +24,14 @@ class PagoController(
 
     @PostMapping
     fun create(@Valid @RequestBody dto: PagoDTO): ResponseEntity<PagoDTO> {
-        val boleto = boletoService.findById(dto.boletoId!!)
+        val boleto = boletoService.findEntityById(dto.boletoId!!)
         val created = pagoService.create(dto.toEntity(boleto))
         return ResponseEntity.status(HttpStatus.CREATED).body(created.toDTO())
     }
 
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long, @Valid @RequestBody dto: PagoDTO): PagoDTO {
-        val boleto = boletoService.findById(dto.boletoId!!)
+        val boleto = boletoService.findEntityById(dto.boletoId!!)
         val updated = pagoService.update(id, dto.toEntity(boleto))
         return updated.toDTO()
     }

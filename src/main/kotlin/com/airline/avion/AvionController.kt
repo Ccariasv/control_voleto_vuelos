@@ -9,34 +9,23 @@ import org.springframework.web.bind.annotation.*
 class AvionController(private val avionService: AvionService) {
 
     @GetMapping
-    fun findAll(): List<AvionDTO> = avionService.findAll().map { it.toDTO() }
+    fun findAll(): List<AvionDto> = avionService.findAll()
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): AvionDTO = avionService.findById(id).toDTO()
+    fun findById(@PathVariable id: Long): AvionDto = avionService.findById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@Valid @RequestBody avionDTO: AvionDTO): AvionDTO =
-        avionService.create(avionDTO.toEntity()).toDTO()
+    fun create(@Valid @RequestBody dto: AvionCreateDto): AvionDto =
+        avionService.create(dto)
 
     @PutMapping("/{id}")
     fun update(
         @PathVariable id: Long,
-        @Valid @RequestBody avionDTO: AvionDTO
-    ): AvionDTO = avionService.update(id, avionDTO.toEntity()).toDTO()
+        @Valid @RequestBody dto: AvionCreateDto
+    ): AvionDto = avionService.update(id, dto)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Long) = avionService.delete(id)
-
-    // Mapping helpers
-    private fun Avion.toDTO() = AvionDTO(id, modelo ?: "", fabricante ?: "", capacidadTotal ?: 0, estado ?: "")
-
-    private fun AvionDTO.toEntity() = Avion(
-        id = id,
-        modelo = modelo,
-        fabricante = fabricante,
-        capacidadTotal = capacidadTotal,
-        estado = estado
-    )
 }

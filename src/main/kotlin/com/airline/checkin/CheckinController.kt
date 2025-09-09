@@ -25,7 +25,7 @@ class CheckinController(
 
     @PostMapping
     fun create(@Valid @RequestBody dto: CheckinDTO): ResponseEntity<CheckinDTO> {
-        val boleto = boletoService.findById(dto.boletoId)
+        val boleto = boletoService.findEntityById(dto.boletoId)
         val created = checkinService.create(dto.toEntity(boleto))
         return ResponseEntity.status(HttpStatus.CREATED).body(created.toDTO())
     }
@@ -35,7 +35,7 @@ class CheckinController(
         @PathVariable id: Long,
         @Valid @RequestBody dto: CheckinDTO
     ): ResponseEntity<CheckinDTO> {
-        val boleto = boletoService.findById(dto.boletoId)
+        val boleto = boletoService.findEntityById(dto.boletoId)
         val updated = checkinService.update(id, dto.toEntity(boleto))
         return ResponseEntity.ok(updated.toDTO())
     }

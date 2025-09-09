@@ -33,7 +33,7 @@ class TurnoEmpleadoController(
     @PostMapping
     fun create(@Valid @RequestBody dto: TurnoEmpleadoDto): ResponseEntity<TurnoEmpleadoDto> {
         val empleado = empleadoService.findById(dto.empleadoId)
-        val vuelo = vueloService.findById(dto.vueloId)
+        val vuelo = vueloService.findEntityById(dto.vueloId)
         val saved = turnoEmpleadoService.create(dto.toEntity(empleado, vuelo))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved.toDto())
     }
@@ -44,7 +44,7 @@ class TurnoEmpleadoController(
         @Valid @RequestBody dto: TurnoEmpleadoDto
     ): ResponseEntity<TurnoEmpleadoDto> = try {
         val empleado = empleadoService.findById(dto.empleadoId)
-        val vuelo = vueloService.findById(dto.vueloId)
+        val vuelo = vueloService.findEntityById(dto.vueloId)
         val saved = turnoEmpleadoService.update(id, dto.toEntity(empleado, vuelo))
         ResponseEntity.ok(saved.toDto())
     } catch (e: NotFoundException) {

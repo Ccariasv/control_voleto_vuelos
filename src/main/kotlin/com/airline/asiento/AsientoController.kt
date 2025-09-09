@@ -31,7 +31,7 @@ class AsientoController(
 
     @PostMapping
     fun create(@Valid @RequestBody dto: AsientoDTO): ResponseEntity<AsientoDTO> {
-        val avion = avionService.findById(dto.avionId)
+        val avion = avionService.findEntityById(dto.avionId)
         val clase = dto.claseId?.let { claseAsientoService.findById(it) }
         val created = asientoService.create(dto.toEntity(avion, clase))
         return ResponseEntity.status(HttpStatus.CREATED).body(created.toDTO())
@@ -42,7 +42,7 @@ class AsientoController(
         @PathVariable id: Long,
         @Valid @RequestBody dto: AsientoDTO,
     ): ResponseEntity<Void> {
-        val avion = avionService.findById(dto.avionId)
+        val avion = avionService.findEntityById(dto.avionId)
         val clase = dto.claseId?.let { claseAsientoService.findById(it) }
         asientoService.update(id, dto.toEntity(avion, clase))
         return ResponseEntity.noContent().build()
