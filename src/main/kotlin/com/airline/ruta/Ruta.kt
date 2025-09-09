@@ -1,21 +1,30 @@
 package com.airline.ruta
 
+import com.airline.aeropuerto.Aeropuerto
 import com.airline.vuelo.Vuelo
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "ruta")
+@Table(name = "rutas")
 data class Ruta(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ruta")
-    var idRuta: Long? = null,
+    @Column(name = "id")
+    var id: Long? = null,
 
-    @Column(name = "origen")
-    var origen: String,
+    @ManyToOne
+    @JoinColumn(name = "a_origen_id")
+    var origen: Aeropuerto,
 
-    @Column(name = "destino")
-    var destino: String,
+    @ManyToOne
+    @JoinColumn(name = "a_destino_id")
+    var destino: Aeropuerto,
+
+    @Column(name = "duracion_aprox_min")
+    var duracionAproxMin: Double? = null,
+
+    @Column(name = "distancia_km")
+    var distanciaKm: Double? = null,
 
     @OneToMany(mappedBy = "ruta")
     var vuelos: MutableList<Vuelo> = mutableListOf()
