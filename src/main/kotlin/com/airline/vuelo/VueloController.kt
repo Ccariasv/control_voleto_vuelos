@@ -46,7 +46,7 @@ class VueloController(
 
     private fun VueloDTO.toEntity() = Vuelo(
         id = id,
-        ruta = rutaService.findById(rutaId),
+        ruta = rutaService.findEntityById(rutaId),
         avion = avionService.findById(avionId),
         salidaTs = salidaTs,
         llegadaTs = llegadaTs,
