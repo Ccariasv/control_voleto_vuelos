@@ -4,11 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
 
-/**
- * DTO for Vuelo entity.
- */
-data class VueloDTO(
-    val id: Long? = null,
+data class VueloCreateDto(
     @field:NotNull
     val rutaId: Long,
     @field:NotNull

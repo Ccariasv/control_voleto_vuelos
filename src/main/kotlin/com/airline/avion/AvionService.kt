@@ -5,19 +5,25 @@ import org.springframework.stereotype.Service
 
 @Service
 class AvionService(private val avionRepository: AvionRepository) {
-    fun findAll(): List<Avion> = avionRepository.findAll()
+    fun findAll(): List<AvionDto> = avionRepository.findAll().map { it.toDto() }
 
-    fun findById(id: Long): Avion =
+    fun findById(id: Long): AvionDto = findEntityById(id).toDto()
+
+    fun findEntityById(id: Long): Avion =
         avionRepository.findById(id).orElseThrow { NotFoundException("Avion $id no encontrado") }
 
-    fun create(avion: Avion): Avion = avionRepository.save(avion)
+    fun create(dto: AvionCreateDto): AvionDto {
+        val entity = dto.toEntity()
+        return avionRepository.save(entity).toDto()
+    }
 
-    fun update(id: Long, avion: Avion): Avion {
+    fun update(id: Long, dto: AvionCreateDto): AvionDto {
         if (!avionRepository.existsById(id)) {
             throw NotFoundException("Avion $id no encontrado")
         }
-        avion.id = id
-        return avionRepository.save(avion)
+        val entity = dto.toEntity()
+        entity.id = id
+        return avionRepository.save(entity).toDto()
     }
 
     fun delete(id: Long) {
@@ -26,4 +32,19 @@ class AvionService(private val avionRepository: AvionRepository) {
         }
         avionRepository.deleteById(id)
     }
+
+    private fun Avion.toDto() = AvionDto(
+        id = id!!,
+        modelo = modelo ?: "",
+        fabricante = fabricante ?: "",
+        capacidadTotal = capacidadTotal ?: 0,
+        estado = estado ?: ""
+    )
+
+    private fun AvionCreateDto.toEntity() = Avion(
+        modelo = modelo,
+        fabricante = fabricante,
+        capacidadTotal = capacidadTotal,
+        estado = estado
+    )
 }
